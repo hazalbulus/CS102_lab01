@@ -41,35 +41,40 @@ public class IntBag {
      * @param value
      * @param index
      */
-    public void addToIndex(int value, int index){
+    public void addToIndex(int value, int index) {
+        
         if(value >= 0){
-            //double the size of the array if there is no capacity for a new element
-            if(index >= bag.length ){
+        
+            if(index >= bag.length || currentValues == bag.length)
                 bag = Arrays.copyOf(bag, bag.length * 2);
+            
+            for(int j = bag.length - 1; j > index; j--){
+                bag[j] = bag[j - 1];
             }
-            int[] result = new int[bag.length];
- 
-            for (int i = 0; i < index; i++) {
-                result[i] = bag[i];
-            }
-    
-            result[index] = value;
-    
-            for (int i = index + 1; i <= bag.length; i++) {
-                result[i] = bag[i - 1];
-            }
+            
+            bag[index] = value;
             currentValues++;
         }
         else
             return;
     }
+    
     /**
      * This method removes the value at the given index by replacing the value with the last non-negative value
      * @param index
      */
     public void remove(int index){
-        bag[index] = bag[bag.length - 1];
-        bag[this.size()-1] = 0;
+        int lastValue = 0;
+        int lastValueIndex = 0;
+        for(int i =0; i<bag.length; i++){
+            if(bag[i] != 0){
+                lastValue = bag[i];
+                lastValueIndex = i;
+            }
+        }
+        bag[index] = lastValue;
+        bag[lastValueIndex] = 0;
+
         currentValues--;
     }
 
